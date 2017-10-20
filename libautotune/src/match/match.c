@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <math.h>
+#include <limits.h>
 #include "match.h"
 #include "../memory/memory.h"
 #include "../bfs/bfs.h"

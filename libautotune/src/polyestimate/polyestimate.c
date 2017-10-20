@@ -4,6 +4,7 @@
 #include <float.h>
 #include <math.h>
 #include "polyestimate.h"
+#include "../cJSON/cJSON.h"
 #include "../memory/memory.h"
 
 #define AVERAGE 1
@@ -88,7 +89,13 @@ FORM *pe_calculate_formulae_from_p_json(char *dir, DATABASE *db) {
 		exit(EXIT_FAILURE);
 	}
 
-	json = load_json(in);
+	fseek(in,0,SEEK_END);
+	long input_file_size;
+	input_file_size = ftell(in);	
+	rewind(in);
+	char *file_contents = (char*)malloc(input_file_size * (sizeof(char)));
+	fread(file_contents, sizeof(char), input_file_size, in);
+	json = cJSON_Parse(file_contents);
 	fclose(in);
 	if (json == NULL) {
 		fprintf(stderr, "%s improperly formatted, load failed.\n", fname);
@@ -116,7 +123,13 @@ FORM *pe_calculate_formulae_from_gates_json(char *dir, DATABASE *db) {
 		exit(EXIT_FAILURE);
 	}
 
-	json = load_json(in);
+	fseek(in,0,SEEK_END);
+	long input_file_size;
+	input_file_size = ftell(in);	
+	rewind(in);
+	char * file_contents = (char*)malloc(input_file_size * (sizeof(char)));
+	fread(file_contents, sizeof(char), input_file_size, in);
+	json = cJSON_Parse(file_contents);
 	fclose(in);
 	if (json == NULL) {
 		fprintf(stderr, "%s improperly formatted, load failed.\n", fname);
